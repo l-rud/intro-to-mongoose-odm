@@ -12,6 +12,24 @@ const userSchema = Schema({
     unique: true,
     min: 5,
   },
+  age: {
+    type: Number,
+    required: true,
+    min: 18,
+    max: 120,
+    message: 'Age must be between 18 and 120',
+  },
+  isCool: Boolean,
+  skills: [String],
+  pets: [
+    {
+      name: String,
+      type: String,
+      color: String,
+      age: Number,
+      isCute: Boolean,
+    },
+  ],
 });
 
 module.exports = model('User', userSchema);
