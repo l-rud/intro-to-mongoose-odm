@@ -7,11 +7,15 @@ router.post('/', usersCtrl.createUser);
 
 router.get('/', usersCtrl.getUsers);
 
+router.get('/over21', usersCtrl.findUsersOver21);
+
 router.get('/email/:email', usersCtrl.findByEmail);
 
 router.get('/:id', usersCtrl.getUserById);
 
-router.patch('/:id', usersCtrl.updateUser);
+router.put('/:id', usersCtrl.updateUser);
+
+router.patch('/:id/skills/add', usersCtrl.addSkills);
 
 router.delete('/:id', usersCtrl.deleteUser);
 

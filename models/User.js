@@ -24,12 +24,24 @@ const userSchema = Schema({
   pets: [
     {
       name: String,
-      type: String,
+      petType: String,
       color: String,
       age: Number,
       isCute: Boolean,
     },
   ],
+  whatever: String,
 });
+
+//Arrow functions do NOT support the "this" keyword
+userSchema.methods.logUserInfo = function () {
+  console.log(
+    `I am ${this.age} years old and I am ${this.isCool ? '' : 'not'} cool`
+  );
+};
+
+userSchema.statics.findOver21 = function () {
+  return this.find({ age: { $gte: 21 } });
+};
 
 module.exports = model('User', userSchema);

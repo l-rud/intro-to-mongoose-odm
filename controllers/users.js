@@ -7,11 +7,18 @@ module.exports = {
   updateUser,
   deleteUser,
   findByEmail,
+  addSkills,
+  findUsersOver21,
 };
 
 async function createUser(req, res) {
   try {
-    const user = await User.create(req.body);
+    // Using the helper function (create)
+    // const user = await User.create(req.body);
+
+    const user = new User(req.body);
+
+    await user.save();
 
     res.status(200).json(user);
   } catch (err) {
@@ -29,10 +36,22 @@ async function getUsers(req, res) {
   }
 }
 
+async function findUsersOver21(req, res) {
+  try {
+    const users = await User.findOver21();
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+}
+
 // Get a single user by ID
 async function getUserById(req, res) {
   try {
     const user = await User.findById(req.params.id);
+
+    user.logUserInfo();
 
     res.status(200).json(user);
   } catch (err) {
@@ -48,6 +67,25 @@ async function updateUser(req, res) {
     });
 
     res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+}
+
+// Add a skill to the skills array
+async function addSkills(req, res) {
+  try {
+    // The skills we will add will be in the req.body
+    // Using the model to find the user by Id
+    const foundUser = await User.findById(req.params.id);
+
+    const concatedArray = foundUser.skills.concat(req.body.skills);
+
+    foundUser.skills = concatedArray;
+
+    await foundUser.save();
+
+    res.send(foundUser);
   } catch (err) {
     res.status(400).send(err);
   }
